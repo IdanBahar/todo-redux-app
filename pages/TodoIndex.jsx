@@ -42,18 +42,14 @@ export function TodoIndex() {
     todoService
       .save(todoToSave)
       .then((savedTodo) => {
-        setTodos((prevTodos) =>
-          prevTodos.map((currTodo) =>
-            currTodo._id !== todo._id ? currTodo : { ...savedTodo }
-          )
-        )
+        loadTodos(filterBy)
         showSuccessMsg(
           `Todo is ${savedTodo.isDone ? 'done' : 'back on your list'}`
         )
       })
       .catch((err) => {
         console.log('err:', err)
-        showErrorMsg('Cannot toggle todo ' + todoId)
+        showErrorMsg('Cannot toggle todo ' + todo._id)
       })
   }
 

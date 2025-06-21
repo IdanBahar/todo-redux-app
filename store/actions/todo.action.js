@@ -1,3 +1,4 @@
+import { showSuccessMsg } from '../../services/event-bus.service.js'
 import { todoService } from '../../services/todo.service.js'
 import { ADD_TODO, UPDATE_TODO } from '../reducers/todo.reducer.js'
 import { store } from '../store.js'
@@ -10,10 +11,11 @@ export function loadTodos(filterBy) {
 }
 
 export function removeTodo(todoId) {
-  return todoService
+  todoService
     .remove(todoId)
     .then(() => {
       store.dispatch({ type: 'REMOVE_TODO', todoId })
+      showSuccessMsg(`Todo Removed (id: ${todoId})`)
     })
     .catch((err) => {
       console.log('Cannot remove todo', err)

@@ -11,6 +11,7 @@ import { AboutTeam } from './cmps/AboutTeam.jsx'
 import { AboutVision } from './cmps/AboutVision.jsx'
 import { Dashboard } from './pages/Dashboard.jsx'
 import { store } from './store/store.js'
+import { ConfirmModal } from './cmps/ConfirmModal.jsx'
 
 export function RootCmp() {
   return (
@@ -34,6 +35,7 @@ export function RootCmp() {
           </main>
         </section>
       </Router>
+      <ConfirmModal />
     </Provider>
   )
 }
