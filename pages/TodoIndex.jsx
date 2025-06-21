@@ -6,20 +6,32 @@ import { DataTable } from '../cmps/data-table/DataTable.jsx'
 import { todoService } from '../services/todo.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { loadTodos, removeTodo } from '../store/actions/todo.action.js'
+import { setFilterBy } from '../store/actions/todo.action.js'
 
-const { useState, useEffect } = React
+const { useEffect } = React
 const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
   const todos = useSelector((state) => state.todosModule.todos)
-  //   const [todos, setTodos] = useState(null)
+  const filterBy = useSelector((state) => state.todosModule.filterBy)
+  const dispatch = useDispatch()
 
+  function onSetFilterBy(filterBy) {
+    setFilterBy(filterBy)
+  }
+
+  //   const [todos, setTodos] = useState(null)
+  let filteredTodos = todos
+
+  if (filterBy.status === 'active') {
+    filteredTodos = todos.filter((todo) => !todo.isDone)
+  } else if (filterBy.status === 'done') {
+    filteredTodos = todos.filter((todo) => todo.isDone)
+  }
   // Special hook for accessing search-params:
   const [searchParams, setSearchParams] = useSearchParams()
 
   const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
-
-  const [filterBy, setFilterBy] = useState(defaultFilter)
 
   useEffect(() => {
     setSearchParams(filterBy)
@@ -56,7 +68,7 @@ export function TodoIndex() {
   if (!todos) return <div>Loading...</div>
   return (
     <section className='todo-index'>
-      <TodoFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
+      <TodoFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
       <div>
         <Link to='/todo/edit' className='btn'>
           Add Todo
@@ -64,7 +76,7 @@ export function TodoIndex() {
       </div>
       <h2>Todos List</h2>
       <TodoList
-        todos={todos}
+        todos={filteredTodos}
         onRemoveTodo={onRemoveTodo}
         onToggleTodo={onToggleTodo}
       />

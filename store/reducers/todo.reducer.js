@@ -2,9 +2,11 @@ export const SET_TODOS = 'SET_TODOS'
 export const REMOVE_TODO = 'REMOVE_TODO'
 export const ADD_TODO = 'ADD_TODO'
 export const UPDATE_TODO = 'UPDATE_TODO'
+export const SET_FILTER = 'SET_FILTER'
 
 const initalState = {
   todos: [],
+  filterBy: 'all',
 }
 
 export function todoReducer(state = initalState, cmd) {
@@ -31,6 +33,11 @@ export function todoReducer(state = initalState, cmd) {
         todos: state.todos.map((currTodo) =>
           currTodo._id === cmd.todo._id ? cmd.todo : currTodo
         ),
+      }
+    case SET_FILTER:
+      return {
+        ...state,
+        filterBy: cmd.filterBy,
       }
 
     default:
