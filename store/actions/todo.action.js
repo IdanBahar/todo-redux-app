@@ -1,4 +1,5 @@
 import { todoService } from '../../services/todo.service.js'
+import { ADD_TODO, UPDATE_TODO } from '../reducers/todo.reducer.js'
 import { store } from '../store.js'
 
 export function loadTodos(filterBy) {
@@ -20,15 +21,16 @@ export function removeTodo(todoId) {
     })
 }
 
-export function addTodo(todo) {
+export function saveTodo(todo) {
+  const type = todo._id ? UPDATE_TODO : ADD_TODO
   return todoService
     .save(todo)
     .then((savedTodo) => {
-      store.dispatch({ type: 'ADD_TODO', todo: savedTodo })
+      store.dispatch({ type, todo: savedTodo })
       return savedTodo
     })
     .catch((err) => {
-      console.log('Canot add todo', err)
+      console.log('Canot save todo', err)
       throw err
     })
 }

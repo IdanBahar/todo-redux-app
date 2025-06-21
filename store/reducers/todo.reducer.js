@@ -24,6 +24,13 @@ export function todoReducer(state = initalState, cmd) {
         ...state,
         todos: [...state.todos, cmd.todo],
       }
+    case UPDATE_TODO:
+      return {
+        ...state,
+        todos: state.todos.map((currTodo) => {
+          currTodo._id === cmd.todo._id ? cmd.todo : currTodo
+        }),
+      }
 
     default:
       return state
