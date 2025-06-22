@@ -1,5 +1,3 @@
-const { useSelector, useDispatch } = ReactRedux
-
 import { TodoFilter } from '../cmps/TodoFilter.jsx'
 import { TodoList } from '../cmps/TodoList.jsx'
 import { DataTable } from '../cmps/data-table/DataTable.jsx'
@@ -7,7 +5,10 @@ import { todoService } from '../services/todo.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { loadTodos, removeTodo } from '../store/actions/todo.action.js'
 import { setFilterBy } from '../store/actions/todo.action.js'
+import { setLoading } from '../store/actions/app.action.js'
+import { Loading } from '../cmps/Loading.jsx'
 
+const { useSelector, useDispatch } = ReactRedux
 const { useEffect } = React
 const { Link, useSearchParams } = ReactRouterDOM
 
@@ -15,7 +16,8 @@ export function TodoIndex() {
   const todos = useSelector((state) => state.todosModule.todos)
   const filterBy = useSelector((state) => state.todosModule.filterBy)
   const dispatch = useDispatch()
-
+  const isLoading = useSelector((state) => state.appModule.isLoading)
+  console.log('isLoading:', isLoading)
   function onSetFilterBy(filterBy) {
     setFilterBy(filterBy)
   }
@@ -34,8 +36,18 @@ export function TodoIndex() {
   const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
 
   useEffect(() => {
+    if (!todos.length) setLoading(true)
     setSearchParams(filterBy)
-    loadTodos(filterBy)
+
+    todoService
+      .query(filterBy)
+      .then((todos) => {
+        dispatch({ type: 'SET_TODOS', todos })
+      })
+      .catch((err) => {
+        console.error('Cannot load todos', err)
+      })
+      .finally(() => setLoading(false))
   }, [filterBy])
 
   function onRemoveTodo(todoId) {
@@ -55,6 +67,7 @@ export function TodoIndex() {
       .save(todoToSave)
       .then((savedTodo) => {
         loadTodos(filterBy)
+
         showSuccessMsg(
           `Todo is ${savedTodo.isDone ? 'done' : 'back on your list'}`
         )
@@ -65,7 +78,7 @@ export function TodoIndex() {
       })
   }
 
-  if (!todos) return <div>Loading...</div>
+  if (isLoading && !todos.length) return <Loading />
   return (
     <section className='todo-index'>
       <TodoFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />

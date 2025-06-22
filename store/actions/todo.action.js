@@ -1,15 +1,17 @@
 import { showSuccessMsg } from '../../services/event-bus.service.js'
 import { todoService } from '../../services/todo.service.js'
 import { ADD_TODO, SET_FILTER, UPDATE_TODO } from '../reducers/todo.reducer.js'
+
 import { store } from '../store.js'
 
 export function loadTodos(filterBy) {
   return todoService
     .query(filterBy)
-    .then((todos) => store.dispatch({ type: 'SET_TODOS', todos }))
+    .then((todos) => {
+      store.dispatch({ type: 'SET_TODOS', todos })
+    })
     .catch((err) => console.log('couldnt load todos'))
 }
-
 export function removeTodo(todoId) {
   todoService
     .remove(todoId)
