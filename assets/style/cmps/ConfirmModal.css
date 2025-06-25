@@ -19,4 +19,10 @@
   max-width: 400px;
   width: 80%;
   text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+.modal div {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }

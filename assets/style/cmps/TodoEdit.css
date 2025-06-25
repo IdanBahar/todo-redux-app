@@ -1,15 +1,44 @@
 .todo-edit {
-    max-width: 300px;
-    margin: auto;
+  max-width: 300px;
+  margin: auto;
 }
 
 .todo-edit form {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.5rem;
-    font-family: 'Edu VIC WA NT Beginner', cursive;
+  padding: 1em 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-family: 'Edu VIC WA NT Beginner', cursive;
+  background: linear-gradient(
+    135deg,
+    rgba(100, 120, 160, 0.7),
+    rgba(148, 148, 148, 0.8)
+  );
+  border-radius: 12px;
+  align-items: center;
 }
 
 .todo-edit form input {
-    margin-bottom: 1em;
+  margin-bottom: 1em;
+}
+.color-picker {
+  display: flex;
+  gap: 10px;
+  margin-block: 1em;
+}
+
+.color-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s ease;
+}
+
+.color-circle.selected {
+  border-color: black;
+  transform: scale(1.1);
 }

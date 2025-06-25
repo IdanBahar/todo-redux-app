@@ -1,5 +1,6 @@
 const { useState, useEffect } = React
 const { useSelector, useDispatch } = ReactRedux
+const { Link, useSearchParams } = ReactRouterDOM
 export function TodoFilter({ filterBy, onSetFilterBy }) {
   const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
   //   const filterBy = useSelector((state) => state.todosModule.filterBy)
@@ -41,36 +42,43 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
     <section className='todo-filter'>
       <h2>Filter Todos</h2>
       <form onSubmit={onSubmitFilter}>
-        <input
-          value={txt}
-          onChange={handleChange}
-          type='search'
-          placeholder='By Txt'
-          id='txt'
-          name='txt'
-        />
-        <label htmlFor='importance'>Importance: </label>
-        <input
-          value={importance}
-          onChange={handleChange}
-          type='number'
-          placeholder='By Importance'
-          id='importance'
-          name='importance'
-        />
+        <label htmlFor='txt'>
+          <input
+            value={txt}
+            onChange={handleChange}
+            type='search'
+            placeholder='By Txt'
+            id='txt'
+            name='txt'
+          />
+        </label>
+        <label htmlFor='importance'>
+          <input
+            value={importance}
+            onChange={handleChange}
+            type='number'
+            placeholder='By Importance'
+            id='importance'
+            name='importance'
+          />
+        </label>
 
         <button hidden>Set Filter</button>
-        <label htmlFor='status'>Status:</label>
-        <select
-          id='status'
-          name='status'
-          value={filterByToEdit.status || 'all'}
-          onChange={handleChange}
-        >
-          <option value='all'>All</option>
-          <option value='active'>Active</option>
-          <option value='done'>Done</option>
-        </select>
+        <label htmlFor='status'>
+          <select
+            id='status'
+            name='status'
+            value={filterByToEdit.status || 'all'}
+            onChange={handleChange}
+          >
+            <option value='all'>All</option>
+            <option value='active'>Active</option>
+            <option value='done'>Done</option>
+          </select>
+        </label>
+        <Link to='/todo/edit' className='btn'>
+          Add Todo
+        </Link>
       </form>
     </section>
   )

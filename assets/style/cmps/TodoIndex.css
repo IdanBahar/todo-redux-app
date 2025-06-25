@@ -1,0 +1,8 @@
+.todo-index {
+  background-color: rgba(220, 220, 220, 0.8);
+  text-align: center;
+}
+.todo-index > h2 {
+  margin-top: 30px;
+  font-family: 'Montserrat Alternates', sans-serif;
+}

@@ -1,16 +1,17 @@
 .todo-preview {
-    text-align: center;
-    padding: 0.3em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  text-align: center;
+  padding: 0.3em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
 .todo-preview h4 {
-    text-transform: capitalize;
-    color: black;
+  text-transform: capitalize;
+  color: black;
 }
 
 .todo-preview img {
-    max-width: 100px;
+  max-width: 100px;
 }

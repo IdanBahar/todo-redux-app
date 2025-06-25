@@ -35,8 +35,11 @@ export function showSuccessMsg(txt) {
 export function showErrorMsg(txt) {
   showUserMsg({ txt, type: 'error' })
 }
-export function showConfirmMsg(msg, onConfirm) {
-  eventBusService.emit('confirm', { msg, onConfirm })
+export function showConfirmMsg({ title, question }, onConfirm) {
+  eventBusService.emit('confirm', {
+    msg: { title, question },
+    onConfirm,
+  })
 }
 // Example for using the service
 // eventBusService.on('some-event', (data) => {
