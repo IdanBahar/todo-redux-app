@@ -25,7 +25,8 @@ function query(filterBy = {}) {
     }
 
     if (filterBy.importance) {
-      todos = todos.filter((todo) => todo.importance >= filterBy.importance)
+      const importance = +filterBy.importance
+      todos = todos.filter((todo) => todo.importance === importance)
     }
 
     return todos

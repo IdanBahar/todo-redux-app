@@ -1,7 +1,8 @@
 import { todoService } from '../services/todo.service.js'
 import { showErrorMsg } from '../services/event-bus.service.js'
-import { setLoading } from '../store/actions/app.action.js'
+
 import { Loading } from '../cmps/Loading.jsx'
+import { setLoading } from '../store/actions/todo.action.js'
 const { useState, useEffect } = React
 const { useParams, useNavigate, Link } = ReactRouterDOM
 const { useSelector, useDispatch } = ReactRedux
@@ -10,7 +11,7 @@ export function TodoDetails() {
   const [todo, setTodo] = useState(null)
   const params = useParams()
   const navigate = useNavigate()
-  const isLoading = useSelector((state) => state.appModule.isLoading)
+  const isLoading = useSelector((state) => state.todosModule.isLoading)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -43,12 +44,7 @@ export function TodoDetails() {
       <h2>{todo.isDone ? 'Done!' : 'In your list'}</h2>
 
       <h1>Todo importance: {todo.importance}</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Enim rem
-        accusantium, itaque ut voluptates quo? Vitae animi maiores nisi,
-        assumenda molestias odit provident quaerat accusamus, reprehenderit
-        impedit, possimus est ad?
-      </p>
+      <p>what exctly you wanted to see here?</p>
       <button onClick={onBack}>Back to list</button>
       <div>
         <Link to={`/todo/${todo.nextTodoId}`}>Next Todo</Link> |

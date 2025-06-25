@@ -1,29 +1,34 @@
 import { todoService } from '../services/todo.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { saveTodo } from '../store/actions/todo.action.js'
+import { saveTodo, setLoading } from '../store/actions/todo.action.js'
+import { Loading } from '../cmps/Loading.jsx'
 
 const { useState, useEffect } = React
+const { useDispatch, useSelector } = ReactRedux
 const { useNavigate, useParams } = ReactRouterDOM
 
 export function TodoEdit() {
   const bgColors = ['#f8bcbc', '#bce6c4', '#c4d8f8', '#f8e6bc']
   const [todoToEdit, setTodoToEdit] = useState(todoService.getEmptyTodo())
-  const [isLoading, setIsLoading] = useState(false)
+
   const navigate = useNavigate()
   const params = useParams()
-  console.log(todoToEdit)
+  const dispatch = useDispatch()
+  const isLoading = useSelector(
+    (storeState) => storeState.todosModule.isLoading
+  )
 
   useEffect(() => {
     if (params.todoId) loadTodo()
   }, [])
 
   function loadTodo() {
-    setIsLoading(true)
+    dispatch(setLoading(true))
     todoService
       .get(params.todoId)
       .then(setTodoToEdit)
       .catch((err) => console.log('err:', err))
-      .finally(() => setIsLoading(false))
+      .finally(() => dispatch(setLoading(false)))
   }
 
   function handleChange({ target }) {
@@ -63,7 +68,7 @@ export function TodoEdit() {
   }
 
   const { txt, importance, isDone } = todoToEdit
-  if (isLoading) return <div className='loader'>Loading...</div>
+  if (isLoading) return <Loading />
 
   return (
     <section className='todo-edit'>

@@ -3,9 +3,15 @@ import { TodoList } from '../cmps/TodoList.jsx'
 import { DataTable } from '../cmps/data-table/DataTable.jsx'
 import { todoService } from '../services/todo.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { loadTodos, removeTodo } from '../store/actions/todo.action.js'
+
+import {
+  loadTodos,
+  removeTodo,
+  saveTodo,
+  setLoading,
+} from '../store/actions/todo.action.js'
 import { setFilterBy } from '../store/actions/todo.action.js'
-import { setLoading } from '../store/actions/app.action.js'
+import { userService } from '../services/user.service.js'
 import { Loading } from '../cmps/Loading.jsx'
 
 const { useSelector, useDispatch } = ReactRedux
@@ -14,10 +20,11 @@ const { Link, useSearchParams } = ReactRouterDOM
 
 export function TodoIndex() {
   const todos = useSelector((state) => state.todosModule.todos)
+  const user = useSelector((state) => state.userModule.loggedInUser)
   const filterBy = useSelector((state) => state.todosModule.filterBy)
   const dispatch = useDispatch()
-  const isLoading = useSelector((state) => state.appModule.isLoading)
-  console.log('isLoading:', isLoading)
+  const isLoading = useSelector((state) => state.todosModule.isLoading)
+  // console.log('isLoading:', isLoading)
   function onSetFilterBy(filterBy) {
     setFilterBy(filterBy)
   }
@@ -37,6 +44,9 @@ export function TodoIndex() {
 
   useEffect(() => {
     if (!todos.length) setLoading(true)
+    setTimeout(() => {
+      setLoading(true)
+    }, 3000)
     setSearchParams(filterBy)
 
     todoService
@@ -48,7 +58,7 @@ export function TodoIndex() {
         console.error('Cannot load todos', err)
       })
       .finally(() => setLoading(false))
-  }, [filterBy])
+  }, [filterBy]) // export to other function
 
   function onRemoveTodo(todoId) {
     removeTodo(todoId)
@@ -62,12 +72,18 @@ export function TodoIndex() {
   }
 
   function onToggleTodo(todo) {
-    const todoToSave = { ...todo, isDone: !todo.isDone }
-    todoService
-      .save(todoToSave)
-      .then((savedTodo) => {
-        loadTodos(filterBy)
+    const todoToSave = {
+      ...todo,
+      isDone: !todo.isDone,
+    }
+    // if (!todo.isDone) updateUserBalance(10)
 
+    saveTodo(todoToSave)
+      .then((savedTodo) => {
+        userService.updateBalance(10).then((updatedUser) => {
+          dispatch({ type: 'SET_USER', user: updatedUser })
+        })
+        loadTodos(filterBy)
         showSuccessMsg(
           `Todo is ${savedTodo.isDone ? 'done' : 'back on your list'}`
         )

@@ -38,6 +38,11 @@ export function saveTodo(todo) {
       throw err
     })
 }
+
 export function setFilterBy(filterBy) {
   store.dispatch({ type: SET_FILTER, filterBy })
+}
+
+export function setLoading(isLoading) {
+  return store.dispatch({ type: 'SET_LOADING', isLoading })
 }

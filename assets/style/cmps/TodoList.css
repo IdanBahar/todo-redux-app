@@ -55,3 +55,12 @@
   background-color: #bce6c4;
   transition: all 0.7s ease;
 }
+
+@media (max-width: 600px) {
+  .todo-list li {
+    width: 100%;
+    border: 1px solid;
+    /* flex-direction: column; */
+    /* padding: 15px; */
+  }
+}

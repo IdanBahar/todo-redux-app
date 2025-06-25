@@ -6,7 +6,8 @@ export const SET_FILTER = 'SET_FILTER'
 
 const initalState = {
   todos: [],
-  filterBy: 'all',
+  filterBy: 'all', // change the default values
+  isLoading: false,
 }
 
 export function todoReducer(state = initalState, cmd) {
@@ -39,8 +40,25 @@ export function todoReducer(state = initalState, cmd) {
         ...state,
         filterBy: cmd.filterBy,
       }
+    case 'SET_LOADING':
+      return {
+        ...state,
+        isLoading: cmd.isLoading,
+      }
 
     default:
       return state
   }
 }
+
+// export function loadingReducer(state = initalState, cmd) {
+//   switch (cmd.type) {
+//     case 'SET_LOADING':
+//       return {
+//         ...state,
+//         isLoading: cmd.isLoading,
+//       }
+//     default:
+//       return state
+//   }
+// }

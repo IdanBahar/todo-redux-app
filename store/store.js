@@ -1,11 +1,14 @@
-import { loadingReducer } from './reducers/loading.reducer.js'
 import { todoReducer } from './reducers/todo.reducer.js'
+import { userReducer } from './reducers/user.reducer.js'
 
-const { createStore, combineReducers } = Redux
+const { createStore, combineReducers, compose } = Redux
 
 const rootReducer = combineReducers({
   todosModule: todoReducer,
-  appModule: loadingReducer,
+  userModule: userReducer,
 })
 
-export const store = createStore(rootReducer)
+const composeEnchancers =
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__() || compose
+
+export const store = createStore(rootReducer, composeEnchancers)
